@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.appscrip.triviaapp.app_constants.SharedPreferenceKeys
 import com.appscrip.triviaapp.models.CommonModel
+import com.appscrip.triviaapp.repository.local.repositories.QuizDataRepository
 import com.appscrip.triviaapp.view_models.QuizViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.Module
@@ -13,19 +14,23 @@ import org.koin.dsl.module
 class AppModules {
 
     fun getModules(): List<Module> {
-        return listOf(appModule)
+        return listOf(appModule, databaseModule)
     }
 
     private val appModule = module {
 
         single { CommonModel(get()) }
 
-        single { QuizViewModel(androidApplication()) }
+        single { QuizViewModel(androidApplication(), get()) }
 
         single { getSharedPreferences(androidApplication()) }
 
         single { getSharedPreferencesEditor(get()) }
 
+    }
+
+    private val databaseModule = module {
+        single { QuizDataRepository(androidApplication()) }
     }
 
     private fun getSharedPreferencesEditor(app: SharedPreferences): SharedPreferences.Editor =

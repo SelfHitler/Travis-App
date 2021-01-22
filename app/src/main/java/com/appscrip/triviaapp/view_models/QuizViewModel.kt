@@ -3,6 +3,7 @@ package com.appscrip.triviaapp.view_models
 import android.app.Application
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.AndroidViewModel
@@ -13,12 +14,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.appscrip.triviaapp.QuestionType
 import com.appscrip.triviaapp.QuizDetail
 import com.appscrip.triviaapp.R
+import com.appscrip.triviaapp.app_constants.ActionListenerKeys
 import com.appscrip.triviaapp.models.CommonModel
+import com.appscrip.triviaapp.repository.local.repositories.QuizDataRepository
+import com.appscrip.triviaapp.views.adapters.QaAdapter
 import com.appscrip.triviaapp.views.adapters.SelectionAdapter
 import com.google.android.material.button.MaterialButton
 import org.koin.java.KoinJavaComponent.inject
 
-class QuizViewModel(application: Application) : AndroidViewModel(application) {
+class QuizViewModel(application: Application, val repository: QuizDataRepository) :
+    AndroidViewModel(application) {
 
     val commonModel by inject(CommonModel::class.java)
 
@@ -66,12 +71,28 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                 }
             })
         }
+        pageNumber.postValue(0)
+
+        name.postValue("")
+
+        allowToOpenNextPage.postValue(true)
+
+        allowToOpenPreviousPage.postValue(false)
 
         quizDetails.value = questionDetails
     }
 
     fun slideToNextPage() {
         validatePageDetails(false)
+    }
+
+    fun showHistory() {
+
+    }
+
+    fun startQuizAgain() {
+        commonModel.actionListener.postValue(ActionListenerKeys.DISMISS_SUMMARY_DIALOG.name)
+        resetQuizData()
     }
 
     private fun validatePageDetails(goBack: Boolean) {
@@ -122,11 +143,13 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun submitQuiz() {
+
         if (quizDetails.value?.get(1)?.selectedOptions.isNullOrEmpty()) {
             commonModel.showToastTextView("Please Select Your Answer")
             return
         }
 
+        commonModel.actionListener.postValue(ActionListenerKeys.SHOW_SUMMARY_DIALOG.name)
         // save Data in DB
 
     }
@@ -147,6 +170,12 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                     button.visibility = View.GONE
                 }
             }
+        }
+
+        @JvmStatic
+        @BindingAdapter("setNameText")
+        fun setNameText(textView: TextView, name: String) {
+            textView.text = "Hello $name"
         }
 
         @JvmStatic
@@ -180,6 +209,24 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                 LinearLayoutManager(recyclerView.context, RecyclerView.VERTICAL, false)
 
             recyclerView.adapter = SelectionAdapter(lifecycle, quizDetail)
+        }
+
+        @JvmStatic
+        @BindingAdapter("quizData")
+        fun answerAdapter(
+            recyclerView: RecyclerView,
+            quizData: ArrayList<QuizDetail>
+        ) {
+            recyclerView.layoutManager =
+                LinearLayoutManager(recyclerView.context, RecyclerView.VERTICAL, false)
+
+            recyclerView.adapter = QaAdapter(quizData)
+        }
+
+        @JvmStatic
+        @BindingAdapter("setSelectedAnswer")
+        fun setSelectedAnswer(textView: TextView, selections: ArrayList<String>) {
+            textView.text = selections.toString().replace("[", "").replace("]", "")
         }
     }
 }

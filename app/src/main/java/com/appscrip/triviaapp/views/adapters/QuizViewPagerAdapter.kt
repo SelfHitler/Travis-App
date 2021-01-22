@@ -1,4 +1,4 @@
-package com.appscrip.triviaapp.views
+package com.appscrip.triviaapp.views.adapters
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment

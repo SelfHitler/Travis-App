@@ -8,10 +8,15 @@ import androidx.lifecycle.observe
 import com.appscrip.triviaapp.R
 import com.appscrip.triviaapp.ZoomOutPageTransformer
 import com.appscrip.triviaapp.app_constants.ActionListenerKeys
+import com.appscrip.triviaapp.app_constants.Status
 import com.appscrip.triviaapp.databinding.ActivityMainBinding
+import com.appscrip.triviaapp.repository.local.entities.QuizDetailEntity
 import com.appscrip.triviaapp.view_models.QuizViewModel
-import com.appscrip.triviaapp.views.QuizViewPagerAdapter
+import com.appscrip.triviaapp.views.adapters.QuizViewPagerAdapter
+import com.appscrip.triviaapp.views.fragments.SummaryDialogFragment
 import org.koin.android.ext.android.inject
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,14 +47,17 @@ class MainActivity : AppCompatActivity() {
         viewModel.commonModel.actionListener.observe(this) {
             if (!it.isNullOrBlank()) {
                 when (it) {
-                    ActionListenerKeys.SLIDE_TO_NEXT_PAGE.name -> {
-                        Log.e("NEXT SLIDE" + activityMainBinding.pager.currentItem, "")
-                        //viewModel.validateNextSlide(activityMainBinding.pager.currentItem)
+                    ActionListenerKeys.SHOW_SUMMARY_DIALOG.name -> {
+                        saveQuizDetailsToDatabase()
+                        showDialog()
                     }
-                    ActionListenerKeys.SLIDE_TO_PREVIOUS_PAGE.name -> {
-                        Log.e("PREVIOUS SLIDE" + activityMainBinding.pager.currentItem, "")
-                        //viewModel.validatePreviousSlide(activityMainBinding.pager.currentItem)
+                    ActionListenerKeys.DISMISS_SUMMARY_DIALOG.name -> {
+                        dismissSummaryFragment()
                     }
+                    else -> {
+
+                    }
+
                 }
                 viewModel.commonModel.actionListener.value = ""
             }
@@ -65,6 +73,38 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    private val dialogFragment = SummaryDialogFragment()
+
+    private fun showDialog() {
+        dialogFragment.show(supportFragmentManager, "summary_fragment")
+    }
+
+    private fun saveQuizDetailsToDatabase() {
+        val quizDetailsEntities = ArrayList<QuizDetailEntity>().apply {
+            add(
+                QuizDetailEntity(
+                    createDate = Date(),
+                    quizDetails = viewModel.quizDetails.value,
+                    nameOfThePlayer = viewModel.name.value ?: "",
+                    id = null
+                )
+            )
+        }
+
+        viewModel.repository.insertQuizDetails(
+            quizDetailsEntities
+        ).observe(this, { it ->
+            it.status.let {
+                Log.e("Status -> ", "" + it.name)
+            }
+        })
+
+    }
+
+    private fun dismissSummaryFragment() {
+        dialogFragment.dismiss()
     }
 
 }

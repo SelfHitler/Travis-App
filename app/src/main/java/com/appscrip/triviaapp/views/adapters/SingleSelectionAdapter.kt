@@ -78,15 +78,8 @@ class SelectionAdapter(
 
         }
 
-
-        if (quizDetail.selectedOptions.contains(quizDetail.options[position])) {
-            holder.itemView.cardView.isChecked = true
-        } else {
-            holder.itemView.cardView.isChecked = false
-        }
-
-        //quizDetail
-
+        holder.itemView.cardView.isChecked = quizDetail.selectedOptions.contains(quizDetail.options[position])
 
     }
+
 }

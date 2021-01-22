@@ -5,4 +5,9 @@
     <string name="question_1">What is your name?</string>
     <string name="name">Name</string>
     <string name="submit">Submit</string>
+    <string name="summary">SUMMARY</string>
+    <string name="finish">Finish</string>
+    <string name="history">History</string>
+    <string name="here_are_the_answers_selected">Here are the answers selected:</string>
+    <string name="answer">Answer:</string>
 </resources>
