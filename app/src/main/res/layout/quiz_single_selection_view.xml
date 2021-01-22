@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.appscrip.triviaapp.view_models.QuizViewModel" />
+
+        <variable
+            name="quizDetails"
+            type="com.appscrip.triviaapp.QuizDetail" />
+
+        <variable
+            name="position"
+            type="Integer" />
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"
+        android:checkable="true">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/_5sdp"
+            android:gravity="center_vertical"
+            android:text="@{quizDetails.options.get(position)}"
+            android:textSize="@dimen/_14sdp" />
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

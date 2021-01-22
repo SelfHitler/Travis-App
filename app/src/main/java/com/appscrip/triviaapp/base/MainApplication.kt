@@ -17,7 +17,7 @@ class MainApplication : Application() {
 
             androidContext(this@MainApplication)
 
-            fileProperties()
+            //fileProperties()
 
             koin.loadModules(AppModules().getModules())
 
