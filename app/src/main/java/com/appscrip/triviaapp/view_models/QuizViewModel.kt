@@ -114,7 +114,7 @@ class QuizViewModel(application: Application, val repository: QuizDataRepository
             1 -> {
                 //validate Single selection
                 //if validation true then
-                if (quizDetails.value?.get(0)?.selectedOptions.isNullOrEmpty()) {
+                if (quizDetails.value?.get(0)?.selectedOptions.isNullOrEmpty() && !goBack) {
                     commonModel.showToastTextView("Please Select Your Answer")
                     return
                 }
@@ -125,7 +125,7 @@ class QuizViewModel(application: Application, val repository: QuizDataRepository
             }
             else -> {
                 //check user Entered Name or not
-                if (name.value.isNullOrEmpty()) {
+                if (name.value?.trim().isNullOrEmpty() && !goBack) {
                     commonModel.showToastTextView("Enter Your Name ")
                     return
                 }
