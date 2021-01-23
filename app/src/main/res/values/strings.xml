@@ -10,4 +10,5 @@
     <string name="history">History</string>
     <string name="here_are_the_answers_selected">Here are the answers selected:</string>
     <string name="answer">Answer:</string>
+    <string name="start_quiz">Start Quiz</string>
 </resources>

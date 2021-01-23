@@ -1,4 +1,4 @@
-package com.appscrip.triviaapp
+package com.appscrip.triviaapp.dto
 
 class QuizDetail {
 

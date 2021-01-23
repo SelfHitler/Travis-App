@@ -1,6 +1,5 @@
 package com.appscrip.triviaapp.models
 
-import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
 import android.view.View
@@ -9,7 +8,7 @@ import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.transition.TransitionManager
 
-class CommonModel(private val sharedPreferences: SharedPreferences) {
+class CommonModel() {
 
     val actionListener = MutableLiveData<String>().apply { value = "" }
 
@@ -23,19 +22,6 @@ class CommonModel(private val sharedPreferences: SharedPreferences) {
         Handler(Looper.getMainLooper()).postDelayed({
             messageShown.postValue(false)
         }, 2000)
-    }
-
-    fun saveString(key: String, value: String) {
-        sharedPreferences.edit().apply {
-            putString(key, value)
-        }.also {
-            it.apply()
-        }
-    }
-
-    fun readString(key: String, defaultValue: String): String? {
-        val result = sharedPreferences.getString(key, defaultValue)
-        return result?.replace("null","")
     }
 
     companion object {

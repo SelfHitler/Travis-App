@@ -11,7 +11,7 @@
 
         <variable
             name="quizDetails"
-            type="com.appscrip.triviaapp.QuizDetail" />
+            type="com.appscrip.triviaapp.dto.QuizDetail" />
 
         <variable
             name="lifeCycle"

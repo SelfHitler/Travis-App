@@ -11,8 +11,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.appscrip.triviaapp.QuestionType
-import com.appscrip.triviaapp.QuizDetail
+import com.appscrip.triviaapp.dto.QuestionType
+import com.appscrip.triviaapp.dto.QuizDetail
 import com.appscrip.triviaapp.R
 import com.appscrip.triviaapp.app_constants.ActionListenerKeys
 import com.appscrip.triviaapp.models.CommonModel
@@ -21,6 +21,9 @@ import com.appscrip.triviaapp.views.adapters.QaAdapter
 import com.appscrip.triviaapp.views.adapters.SelectionAdapter
 import com.google.android.material.button.MaterialButton
 import org.koin.java.KoinJavaComponent.inject
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class QuizViewModel(application: Application, val repository: QuizDataRepository) :
     AndroidViewModel(application) {
@@ -40,6 +43,9 @@ class QuizViewModel(application: Application, val repository: QuizDataRepository
 
     }
 
+    /*
+    * To Reset Quiz Data to default
+    * */
     private fun resetQuizData() {
         val questionDetails = ArrayList<QuizDetail>()
         questionDetails.apply {
@@ -82,12 +88,20 @@ class QuizViewModel(application: Application, val repository: QuizDataRepository
         quizDetails.value = questionDetails
     }
 
+    /*
+    * onClick of forward button this functionality will call
+    * */
     fun slideToNextPage() {
         validatePageDetails(false)
     }
 
+    /*
+    * onClick of show history button this functionality will call.
+    * After Reset the Quiz Details, It will redirect to the Dialog Fragment
+    * */
     fun showHistory() {
-
+        resetQuizData()
+        commonModel.actionListener.postValue(ActionListenerKeys.SHOW_HISTORY.name)
     }
 
     fun startQuizAgain() {
@@ -150,7 +164,6 @@ class QuizViewModel(application: Application, val repository: QuizDataRepository
         }
 
         commonModel.actionListener.postValue(ActionListenerKeys.SHOW_SUMMARY_DIALOG.name)
-        // save Data in DB
 
     }
 
@@ -227,6 +240,15 @@ class QuizViewModel(application: Application, val repository: QuizDataRepository
         @BindingAdapter("setSelectedAnswer")
         fun setSelectedAnswer(textView: TextView, selections: ArrayList<String>) {
             textView.text = selections.toString().replace("[", "").replace("]", "")
+        }
+
+        @JvmStatic
+        @BindingAdapter("setTime", requireAll = false)
+        fun setTime(textView: TextView, date: Date?) {
+            val pattern = "dd-MM-yyyy hh:mm aaa"
+            val simpleDateFormat = SimpleDateFormat(pattern)
+            val dateString: String = simpleDateFormat.format(date ?: Date())
+            textView.text = dateString
         }
     }
 }

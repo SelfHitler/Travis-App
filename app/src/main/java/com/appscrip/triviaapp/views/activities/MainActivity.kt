@@ -1,5 +1,6 @@
 package com.appscrip.triviaapp.views.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -53,6 +54,10 @@ class MainActivity : AppCompatActivity() {
                     }
                     ActionListenerKeys.DISMISS_SUMMARY_DIALOG.name -> {
                         dismissSummaryFragment()
+                    }
+                    ActionListenerKeys.SHOW_HISTORY.name -> {
+                        dismissSummaryFragment()
+                        startActivity(Intent(this@MainActivity, HistoryActivity::class.java))
                     }
                     else -> {
 

@@ -1,7 +1,7 @@
 package com.appscrip.triviaapp.views.adapters
 
 import androidx.recyclerview.widget.RecyclerView
-import com.appscrip.triviaapp.QuizDetail
+import com.appscrip.triviaapp.dto.QuizDetail
 import com.appscrip.triviaapp.databinding.QuestionsAnswerViewBinding
 
 class QaViewHolder(private val viewBinding: QuestionsAnswerViewBinding) :

@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.appscrip.triviaapp.QuizDetail
+import com.appscrip.triviaapp.dto.QuizDetail
 import com.appscrip.triviaapp.R
 import com.appscrip.triviaapp.databinding.QuestionsAnswerViewBinding
 

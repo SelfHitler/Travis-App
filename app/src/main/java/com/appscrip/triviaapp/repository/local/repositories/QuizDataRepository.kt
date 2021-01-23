@@ -9,6 +9,9 @@ import com.appscrip.triviaapp.repository.local.dao.QuizDao
 import com.appscrip.triviaapp.repository.local.entities.QuizDetailEntity
 import kotlinx.coroutines.Dispatchers
 
+/*
+* Quiz Database Repository to handle Db operation
+* */
 class QuizDataRepository(application: Application) {
 
     private var dao: QuizDao?
@@ -18,6 +21,9 @@ class QuizDataRepository(application: Application) {
         dao = db?.quizDao()
     }
 
+    /*
+    * to Read All stored information from Database
+    * */
     fun readQuizDetails() = liveData(Dispatchers.IO) {
 
         emit(Resource.loading(data = null))
@@ -33,6 +39,9 @@ class QuizDataRepository(application: Application) {
         }
     }
 
+    /*
+    * Insertion of Quize Details
+    * */
     fun insertQuizDetails(products: ArrayList<QuizDetailEntity>) = liveData(Dispatchers.IO) {
 
         emit(Resource.loading(data = null))
